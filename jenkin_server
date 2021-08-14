@@ -1,0 +1,18 @@
+#!/bin/bash
+yum install java* -y
+yum install java-11-openjdk-devel -y
+yum install git -y
+yum install wget -y
+yum install vim -y
+rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+cd /etc/yum.repos.d/
+curl -O https://pkg.jenkins.io/redhat-stable/jenkins.repo
+yum install jenkins -y
+systemctl restart jenkins
+systemctl enable jenkins
+sed -i 's/^#PermitRootLogin yes$/PermitRootLogin yes/' /etc/ssh/sshd_config
+sed -i 's/^PasswordAuthentication no$/PasswordAuthentication yes/' /etc/ssh/sshd_config
+systemctl restart sshd
+systemctl enable sshd
+echo "jenkin" | passwd --stdin root
+hostnamectl set-hostname jenkinserver1
