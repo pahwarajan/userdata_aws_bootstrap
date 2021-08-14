@@ -6,13 +6,12 @@ systemctl enable sshd
 echo "NFS" | passwd --stdin root
 hostnamectl set-hostname nfsserver
 mkdir /data
-yum install nfs-server -y
+chmod 757 /data
 yum install nfs-utils -y
 yum install wget -y
 yum install vim -y
-chmod 757 /data
 sed -i 's/^SELINUX=enforcing$/SELINUX=disabled/' /etc/selinux/config
 echo "/data   *(rw,sync)" > /etc/exports
 systemctl start nfs-server
 systemctl enable nfs-server
-exportfs -Rv
+exportfs -rv
